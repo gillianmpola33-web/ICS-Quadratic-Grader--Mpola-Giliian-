@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quadratic Equation Solver & Grading System</title>
+</head>
+<body>
+  <h1>Quadratic Equation Solver & Grading System</h1>
+  <p>Enter values below to solve a quadratic equation or convert a score to a grade.</p>
+  <div class="section">
+    <h2>Quadratic Equation Solver</h2>
+    <label>a: <input type="number" id="a"></label>
+    <label>b: <input type="number" id="b"></label>
+    <label>c: <input type="number" id="c"></label>
+    <div id="quadError" class="error"></div>
+    <button onclick="solveQuadratic()">Compute</button>
+    <button onclick="resetQuadratic()">Reset</button>
+    <div id="quadResult" class="result"></div>
+  </div>
+  <div class="section">
+    <h2>Grading System</h2>
+    <label>Score (0–100): <input type="number" id="score"></label>
+    <div id="gradeError" class="error"></div>
+    <button onclick="computeGrade()">Compute</button>
+    <button onclick="resetGrade()">Reset</button>
+    <div id="gradeResult" class="result"></div>
+  </div>
+
+  <script>
+    function solveQuadratic() {
+      const a = parseFloat(document.getElementById("a").value);
+      const b = parseFloat(document.getElementById("b").value);
+      const c = parseFloat(document.getElementById("c").value);
+      const error = document.getElementById("quadError");
+      const result = document.getElementById("quadResult");
+      error.textContent = "";
+      result.textContent = "";
+
+      if (isNaN(a) || isNaN(b) || isNaN(c)) {
+        error.textContent = "Please enter valid numbers for a, b, and c.";
+        return;
+      }
+      if (a === 0) {
+        error.textContent = "Coefficient 'a' cannot be zero.";
+        return;
+      }
+
+      const D = b * b - 4 * a * c;
+      let output = `Discriminant (D) = ${D.toFixed(2)}. `;
+
+      if (D > 0) {
+        const x1 = ((-b + sqrt(D)) / (2 * a));
+        const x2 = ((-b - sqrt(D)) / (2 * a));
+        output += `Two distinct real roots: x₁ = ${x1}, x₂ = ${x2}.`;
+      } else if (D === 0) {
+        const x = (-b / (2 * a));
+        output += `One repeated real root: x = ${x}.`;
+      } else {
+        const real = (-b / (2 * a));
+        const imag = (Math.sqrt(-D) / (2 * a));
+        output += `Two complex roots: x₁ = ${real} + ${imag}i, x₂ = ${real} - ${imag}i.`;
+      }
+
+      result.textContent = output;
+    }
+
+    function resetQuadratic() {
+      document.getElementById("a").value = "";
+      document.getElementById("b").value = "";
+      document.getElementById("c").value = "";
+      document.getElementById("quadError").textContent = "";
+      document.getElementById("quadResult").textContent = "";
+    }
+
+    function computeGrade() {
+      const score = parseInt(document.getElementById("score").value);
+      const error = document.getElementById("gradeError");
+      const result = document.getElementById("gradeResult");
+      error.textContent = "";
+      result.textContent = "";
+
+      if (isNaN(score) || score < 0 || score > 100) {
+        error.textContent = "Please enter a score between 0 and 100.";
+        return;
+      }
+
+      let grade = "";
+      if (score >= 85) grade = "A+";
+      else if (score >= 75) grade = "A";
+      else if (score >= 65) grade = "B+";
+      else if (score >= 60) grade = "B";
+      else if (score >= 55) grade = "C+";
+      else if (score >= 50) grade = "C";
+      else grade = "D";
+
+      result.textContent = `Score ${score} → Grade ${grade}`;
+    }
+
+    function resetGrade() {
+      document.getElementById("score").value = "";
+      document.getElementById("gradeError").textContent = "";
+      document.getElementById("gradeResult").textContent = "";
+    }
+  </script>
+</body>
+</html>
